@@ -1,0 +1,689 @@
+@import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+@import 'tailwindcss';
+
+/* Ligature icons inside slotted button content (alert actions, toolbar, etc.) */
+modus-wc-button modus-wc-icon i.modus-icons,
+modus-wc-button modus-wc-icon i.modus-icons-outlined,
+modus-wc-button modus-wc-icon i.modus-icons-solid {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+:root {
+  --padding-card: 1rem;
+  --font-sans: 'Open Sans', system-ui, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+#root {
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#root > modus-wc-theme-provider {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+.root-viewport,
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.app-body-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+#main-content {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  background-color: var(--modus-wc-color-base-page);
+}
+
+.page-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-md);
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  min-width: 0;
+  padding-top: var(--modus-wc-spacing-lg);
+  padding-bottom: calc(32px + var(--modus-wc-spacing-lg));
+  padding-inline: 64px;
+}
+
+.page-main modus-wc-typography[hierarchy='h1'] p,
+.page-main modus-wc-typography[hierarchy='h1'] {
+  margin-block: 0;
+}
+
+modus-wc-card + modus-wc-card {
+  margin-top: 0;
+}
+
+modus-wc-card [slot='title'],
+modus-wc-card .modus-wc-card-title {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+modus-wc-divider,
+.modus-wc-divider {
+  margin: 0 !important;
+}
+
+.app-shell modus-wc-navbar [slot='center'][hidden] {
+  display: none !important;
+}
+
+/* App shell navbar — Figma Trimble recipe (60px, white, bottom border) */
+.app-shell modus-wc-navbar.app-shell-navbar {
+  flex-shrink: 0;
+}
+
+.app-shell modus-wc-navbar modus-wc-toolbar,
+.app-shell modus-wc-navbar modus-wc-toolbar .modus-wc-toolbar {
+  height: 100%;
+  min-height: 0;
+  background-color: var(--modus-wc-color-white);
+}
+
+.app-shell modus-wc-navbar .modus-wc-navbar {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  min-height: 60px;
+  padding: 6px 12px;
+  overflow: hidden;
+  background-color: var(--modus-wc-color-white);
+  border-bottom: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Fingerprint pattern — absolute layer behind navbar content (Figma: top 1px, z-index 0) */
+.app-shell modus-wc-navbar .modus-wc-navbar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1px;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/modus-web-components/Navbarpattern.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: left top;
+}
+
+html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
+  background-image: url('/modus-web-components/Navabardarkpattern.svg');
+}
+
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-start,
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-center,
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-end,
+.app-shell modus-wc-navbar .modus-wc-navbar [slot] {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-start,
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-center,
+.app-shell modus-wc-navbar .modus-wc-navbar .modus-wc-navbar-end {
+  align-items: center;
+  min-height: 48px;
+}
+
+.app-shell modus-wc-navbar .modus-wc-navbar [slot='start'] .main-menu {
+  height: calc(100dvh - 60px);
+  top: 60px;
+}
+
+/* Hamburger — 40×40 gray pill */
+.app-shell modus-wc-navbar .modus-wc-navbar [slot='start'] modus-wc-button .modus-wc-btn.modus-wc-btn-square {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  background-color: var(--modus-wc-color-gray-light);
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  color: var(--modus-wc-color-gray-10);
+  box-shadow: none;
+}
+
+.app-shell modus-wc-navbar .modus-wc-navbar [slot='start'] modus-wc-button .modus-wc-btn.modus-wc-btn-square svg {
+  width: 24px;
+  height: 24px;
+}
+
+.app-shell modus-wc-navbar .pm-navbar-logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 32px;
+  margin-inline-start: var(--modus-wc-spacing-xs);
+}
+
+.app-shell modus-wc-navbar .pm-navbar-logo img {
+  display: block;
+  width: auto;
+  height: 32px;
+  max-width: 128px;
+}
+
+/* End cluster — company select + avatar */
+.app-shell modus-wc-navbar .pm-navbar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  min-width: 0;
+  height: 40px;
+}
+
+.app-shell modus-wc-navbar .pm-navbar-end modus-wc-select {
+  width: 285px;
+  max-width: min(285px, 45vw);
+  min-width: 0;
+  flex: none;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.05));
+}
+
+.app-shell modus-wc-navbar .pm-navbar-end modus-wc-select select.pm-navbar-company-select,
+.app-shell modus-wc-navbar .pm-navbar-end modus-wc-select select.modus-wc-select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 2.5rem 0 16px;
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-gray-light);
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 28px;
+  color: var(--modus-wc-color-gray-10);
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23171C1E'%3E%3Cpath d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px 18px;
+}
+
+.app-shell modus-wc-navbar .pm-navbar-end modus-wc-avatar .pm-navbar-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.app-shell modus-wc-navbar .pm-navbar-end modus-wc-avatar .pm-navbar-avatar .initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--modus-wc-color-trimble-gray);
+  font-size: var(--modus-wc-font-size-xs);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 20px;
+  color: var(--modus-wc-color-white);
+}
+
+.pm-project-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: var(--modus-wc-spacing-md);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .pm-project-grid {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  }
+}
+
+.pm-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-md);
+}
+
+.pm-table-toolbar-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-md);
+}
+
+/* Figma inline-label filter fields — 337×32 */
+.pm-filter-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  box-sizing: border-box;
+  width: 337px;
+  max-width: 100%;
+  height: 32px;
+  padding: 4px 12px;
+  background-color: var(--modus-wc-color-base-100);
+  border: 1px solid rgb(23 28 30 / 0.6);
+  border-radius: var(--modus-wc-border-radius-md);
+  flex: none;
+}
+
+.pm-filter-inline-label {
+  flex: none;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 20px;
+  color: var(--modus-wc-color-gray-6);
+  white-space: nowrap;
+}
+
+.pm-filter-field modus-wc-select,
+.pm-filter-field modus-wc-text-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.pm-filter-field modus-wc-select select.pm-filter-control,
+.pm-filter-field modus-wc-select select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: 24px;
+  color: var(--modus-wc-color-gray-10);
+  appearance: none;
+  cursor: pointer;
+}
+
+.pm-filter-field modus-wc-text-input > label {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.pm-filter-field modus-wc-text-input input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: 24px;
+  color: var(--modus-wc-color-gray-10);
+}
+
+.pm-filter-field-select modus-wc-select select {
+  padding-right: 0.25rem;
+}
+
+.pm-filter-field-chevron {
+  flex: none;
+  pointer-events: none;
+  color: var(--modus-wc-color-gray-10);
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.pm-filter-field modus-wc-icon i.modus-icons-outlined {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+.pm-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  padding: var(--modus-wc-spacing-sm);
+  box-sizing: border-box;
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow:
+    0 -1px 2px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Properties toolbar control — Figma (109×24 gray pill) */
+.pm-table-actions modus-wc-button .modus-wc-btn.pm-properties-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 109px;
+  min-width: 109px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-gray-light);
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 16px;
+  color: var(--modus-wc-color-gray-10);
+  box-shadow: none;
+}
+
+.pm-table-actions modus-wc-button .modus-wc-btn.pm-properties-btn:hover {
+  background-color: var(--modus-wc-color-gray-light);
+  color: var(--modus-wc-color-gray-10);
+}
+
+.pm-table-actions modus-wc-button .pm-properties-btn modus-wc-icon i.modus-wc-icon {
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.pm-table-actions modus-wc-button .pm-properties-btn modus-wc-icon i.modus-icons-outlined {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+.pm-record-count {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  color: var(--modus-wc-color-base-content-low-contrast);
+}
+
+.pm-sticky-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-md);
+  height: 32px;
+  min-height: 32px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.pm-sticky-footer .pm-filter-field {
+  width: auto;
+  min-width: 12rem;
+  max-width: 337px;
+}
+
+.pm-sticky-footer-actions {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+/* Validate & Continue — Figma primary CTA (159×32) */
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 159px;
+  min-width: 159px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-trimble-blue);
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 14px;
+  color: var(--modus-wc-color-white);
+  box-shadow: none;
+}
+
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:hover:not(:disabled) {
+  background-color: var(--modus-wc-color-trimble-blue);
+  color: var(--modus-wc-color-white);
+}
+
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pm-alert-row {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-md);
+}
+
+.pm-alert-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Unposted batches banner — Figma 40px strip */
+modus-wc-alert .modus-wc-alert.pm-batch-alert {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  padding: 0 var(--modus-wc-spacing-sm);
+  gap: var(--modus-wc-spacing-xs);
+  grid-auto-flow: unset;
+  grid-template-columns: unset;
+  text-align: start;
+}
+
+modus-wc-alert .modus-wc-alert.pm-batch-alert .description {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25;
+}
+
+modus-wc-alert .modus-wc-alert.pm-batch-alert modus-wc-icon i.modus-wc-icon {
+  font-size: 1rem;
+}
+
+/* View Batches — Figma warning outlined CTA (#E49325 → --modus-wc-color-warning) */
+modus-wc-button .modus-wc-btn.pm-view-batches-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+  gap: var(--modus-wc-spacing-xs);
+  height: 24px;
+  min-height: 24px;
+  padding: 0 var(--modus-wc-spacing-sm);
+  border: 1px solid var(--modus-wc-color-warning);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: transparent;
+  color: var(--modus-wc-color-warning);
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 1.3333333;
+}
+
+modus-wc-button .modus-wc-btn.pm-view-batches-btn:hover {
+  background-color: var(--modus-wc-color-warning-pale);
+  border-color: var(--modus-wc-color-warning);
+  color: var(--modus-wc-color-warning);
+}
+
+modus-wc-button .pm-view-batches-btn modus-wc-icon i.modus-wc-icon.modus-wc-icon--xs {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--modus-wc-color-warning);
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+modus-wc-table {
+  width: 100%;
+}
+
+/* PM Interface table typography — headers 14px, body cells 12px */
+modus-wc-table .modus-wc-table th {
+  font-size: var(--modus-wc-font-size-md);
+  line-height: 1.25;
+}
+
+modus-wc-table .modus-wc-table td {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.3333333;
+}
+
+modus-wc-table .modus-wc-table td span {
+  font-size: inherit;
+}
+
+/* PM Interface table row height — Figma 40px */
+modus-wc-table .modus-wc-table.modus-wc-table-density-compact th,
+modus-wc-table .modus-wc-table.modus-wc-table-density-compact td {
+  box-sizing: border-box;
+  height: 40px;
+  max-height: 40px;
+  padding-block: 0;
+  padding-inline: var(--modus-wc-spacing-sm);
+  vertical-align: middle;
+}
+
+modus-wc-table .modus-wc-table tbody tr {
+  height: 40px;
+}
+
+modus-wc-table .modus-wc-table th.sortable {
+  padding-right: 1.5rem;
+}
+
+/* Sort icons only after a column is actively sorted (not on every header) */
+modus-wc-table .modus-wc-table th.sortable .sort-icon {
+  display: none;
+}
+
+modus-wc-table .modus-wc-table th.sortable[aria-sort='ascending'] .sort-icon,
+modus-wc-table .modus-wc-table th.sortable[aria-sort='descending'] .sort-icon {
+  display: block;
+}
+
+/* Numeric columns — right-align headers and cells (ID, CO Number, ACO, amounts) */
+modus-wc-table .modus-wc-table th.pm-table-col-numeric,
+modus-wc-table .modus-wc-table td.pm-table-col-numeric {
+  text-align: right;
+}
+
+modus-wc-table .modus-wc-table th.pm-table-col-numeric.sortable {
+  padding-inline-end: 1.5rem;
+  padding-inline-start: var(--modus-wc-spacing-sm);
+}
+
+modus-wc-table .modus-wc-table th.pm-table-col-numeric.sortable .sort-icon {
+  right: var(--modus-wc-spacing-sm);
+  left: auto;
+}
+
+modus-wc-table .modus-wc-table td.pm-table-col-numeric > span {
+  display: block;
+  width: 100%;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+modus-wc-table modus-wc-icon i.modus-icons,
+modus-wc-table modus-wc-icon i.modus-icons-outlined,
+modus-wc-table modus-wc-icon i.modus-icons-solid {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+/* Checkboxes — Figma 4px corner radius */
+modus-wc-checkbox input[type='checkbox'].modus-wc-checkbox {
+  border-radius: 4px;
+}
+
+.pm-table-scroll {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+/* Table section: sit on page chrome without a card surface fill */
+modus-wc-card .modus-wc-card.pm-table-card {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+modus-wc-card .modus-wc-card.pm-table-card:hover {
+  box-shadow: none;
+}

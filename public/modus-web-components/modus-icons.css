@@ -1,0 +1,59 @@
+/*!
+ * Modus Icons — blueprint pattern (@trimble-oss/modus-icons@1 via jsDelivr)
+ */
+@font-face {
+  font-family: 'modus-icons';
+  font-display: block;
+  font-style: normal;
+  font-weight: normal;
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'modus-icons-outlined';
+  font-display: block;
+  font-style: normal;
+  font-weight: normal;
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'modus-icons-solid';
+  font-display: block;
+  font-style: normal;
+  font-weight: normal;
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.woff2')
+    format('woff2');
+}
+
+.modus-icons,
+.modus-icons-outlined,
+.modus-icons-solid {
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+.modus-icons-outlined {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+}
+
+.modus-icons-solid {
+  font-family: 'modus-icons-solid', sans-serif;
+}
+
+.modus-icons {
+  font-family: 'modus-icons', sans-serif;
+}
