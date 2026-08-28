@@ -4,7 +4,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { ModusWcTypography } from '@trimble-oss/moduswebcomponents-react'
+import { ModusWcCollapse, ModusWcTypography } from '@trimble-oss/moduswebcomponents-react'
 
 export function EstimateField({ label, value }: { label: string; value: string }) {
   return (
@@ -119,6 +119,7 @@ export function SubcontractItemEstimatesCollapse({
 
     measure()
     const frame = requestAnimationFrame(measure)
+    void customElements.whenDefined('modus-wc-collapse').then(measure)
     const observer = new ResizeObserver(measure)
     observer.observe(host)
     const tabPanel = host.closest('[role="tabpanel"]')
@@ -140,11 +141,11 @@ export function SubcontractItemEstimatesCollapse({
       hidden={hidden}
       aria-hidden={hidden}
     >
-      <modus-wc-collapse
+      <ModusWcCollapse
         bordered={false}
-        chevron-position="right"
-        collapse-id={collapseId}
-        custom-class="sl-item-estimates-collapse"
+        chevronPosition="right"
+        collapseId={collapseId}
+        customClass="sl-item-estimates-collapse"
         expanded={collapseExpanded}
         onExpandedChange={(event: CustomEvent<{ expanded: boolean }>) => {
           if (!needsAccordion) return
@@ -155,7 +156,7 @@ export function SubcontractItemEstimatesCollapse({
           {children}
         </div>
         <div slot="content" hidden aria-hidden="true" />
-      </modus-wc-collapse>
+      </ModusWcCollapse>
     </div>
   )
 }

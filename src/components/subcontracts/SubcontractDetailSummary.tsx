@@ -3,6 +3,7 @@ import {
   ModusWcBadge,
   ModusWcButton,
   ModusWcCard,
+  ModusWcCollapse,
   ModusWcIcon,
   ModusWcModal,
   ModusWcTypography,
@@ -86,10 +87,10 @@ export function SubcontractDetailSummary({
           className="sl-detail-summary-collapse-host"
           data-expanded={summaryExpanded ? 'true' : 'false'}
         >
-          <modus-wc-collapse
+          <ModusWcCollapse
             bordered={false}
-            chevron-position="right"
-            custom-class="sl-detail-summary-collapse"
+            chevronPosition="right"
+            customClass="sl-detail-summary-collapse"
             expanded={summaryExpanded}
             onExpandedChange={(event: CustomEvent<{ expanded: boolean }>) => {
               setSummaryExpanded(event.detail.expanded)
@@ -222,7 +223,7 @@ export function SubcontractDetailSummary({
               </div>
             </div>
           </div>
-        </modus-wc-collapse>
+        </ModusWcCollapse>
         </div>
       </ModusWcCard>
 
