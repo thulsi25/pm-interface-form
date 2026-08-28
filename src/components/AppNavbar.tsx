@@ -29,10 +29,10 @@ export function AppNavbar() {
     >
       <div slot="start" className="pm-navbar-logo">
         <img
-          alt="Viewpoint Construction Services"
+          alt="Viewpoint Construction Software"
+          className="pm-navbar-logo-img"
           height={32}
-          src="/viewpoint-construction-logo.svg"
-          width={85}
+          src="/viewpoint-construction-logo.png"
         />
       </div>
       <div slot="end" className="pm-navbar-end">

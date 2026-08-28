@@ -57,6 +57,8 @@ body {
 }
 
 #main-content {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
   min-width: 0;
@@ -64,22 +66,29 @@ body {
   background-color: var(--modus-wc-color-base-page);
 }
 
+#main-content:has(.sl-page-detail) {
+  overflow: hidden;
+}
+
 .page-main {
   display: flex;
   flex-direction: column;
   gap: var(--modus-wc-spacing-md);
   width: 100%;
-  max-width: 80rem;
+  max-width: none;
   margin-inline: auto;
   min-width: 0;
   padding-top: var(--modus-wc-spacing-lg);
-  padding-bottom: calc(32px + var(--modus-wc-spacing-lg));
+  padding-bottom: calc(32px + var(--padding-card) + var(--modus-wc-spacing-md));
   padding-inline: 64px;
 }
 
 .page-main modus-wc-typography[hierarchy='h1'] p,
 .page-main modus-wc-typography[hierarchy='h1'] {
   margin-block: 0;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--modus-wc-color-gray-10);
 }
 
 modus-wc-card + modus-wc-card {
@@ -199,14 +208,84 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   margin-inline-start: var(--modus-wc-spacing-xs);
 }
 
-.app-shell modus-wc-navbar .pm-navbar-logo img {
+.app-shell modus-wc-navbar .pm-navbar-logo img,
+.app-shell modus-wc-navbar .pm-navbar-logo-img {
   display: block;
   width: auto;
   height: 32px;
   max-width: 128px;
+  object-fit: contain;
 }
 
-/* End cluster — company select + avatar */
+.pm-project-card.modus-wc-card {
+  background-color: var(--modus-wc-color-base-100);
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow: none;
+}
+
+.pm-project-card.modus-wc-card:hover {
+  box-shadow: none;
+}
+
+.pm-project-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: calc(var(--modus-wc-spacing-md) + var(--padding-card));
+  row-gap: var(--modus-wc-spacing-xs);
+  align-items: center;
+}
+
+.pm-project-grid-label,
+.pm-project-grid-label p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 20px;
+  color: var(--modus-wc-color-gray-6);
+}
+
+.pm-required-indicator {
+  color: var(--modus-wc-color-red);
+}
+
+.pm-project-grid modus-wc-text-input.pm-project-input {
+  display: inline-block;
+}
+
+/* customClass lands on the inner <label>, not the host element, so it carries
+   both the width override and the search-icon side (reversed to trailing,
+   matching the revamped ACO reference) */
+.pm-project-grid label.pm-project-input {
+  width: 342px;
+  max-width: 342px;
+  flex-direction: row-reverse;
+}
+
+.pm-project-grid label.pm-project-input input.modus-wc-grow {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.pm-project-grid-value,
+.pm-project-grid-value p {
+  margin: 0;
+  min-height: var(--modus-wc-size-sm);
+  display: flex;
+  align-items: center;
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: var(--modus-wc-size-sm);
+  color: var(--modus-wc-color-gray-10);
+}
+
+@media (min-width: 768px) {
+  .pm-project-grid {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
 .app-shell modus-wc-navbar .pm-navbar-end {
   display: flex;
   align-items: center;
@@ -264,18 +343,7 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   color: var(--modus-wc-color-white);
 }
 
-.pm-project-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
-  gap: var(--modus-wc-spacing-md);
-  align-items: start;
-}
-
-@media (min-width: 768px) {
-  .pm-project-grid {
-    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-  }
-}
+/* End cluster — company select + avatar */
 
 .pm-table-toolbar {
   display: flex;
@@ -303,10 +371,15 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   max-width: 100%;
   height: 32px;
   padding: 4px 12px;
-  background-color: var(--modus-wc-color-base-100);
+  background-color: var(--modus-wc-color-white);
   border: 1px solid rgb(23 28 30 / 0.6);
   border-radius: var(--modus-wc-border-radius-md);
   flex: none;
+}
+
+.pm-inventory-company-field {
+  width: 224px;
+  max-width: 224px;
 }
 
 .pm-filter-inline-label {
@@ -395,8 +468,13 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--modus-wc-spacing-xs);
-  padding: var(--modus-wc-spacing-sm);
   box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  padding-block: 0;
+  padding-inline: var(--modus-wc-spacing-sm);
   border: 1px solid var(--modus-wc-color-gray-0);
   border-radius: var(--modus-wc-border-radius-lg);
   box-shadow:
@@ -445,6 +523,44 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   font-feature-settings: 'liga';
 }
 
+.pm-table-actions modus-wc-button .modus-wc-btn.pm-clear-search-btn {
+  min-width: auto;
+  height: 24px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 16px;
+  color: var(--modus-wc-color-gray-4);
+  box-shadow: none;
+}
+
+.pm-table-actions modus-wc-button .modus-wc-btn.pm-clear-search-btn:disabled {
+  opacity: 1;
+  color: var(--modus-wc-color-gray-4);
+}
+
+.pm-accounting-period-field {
+  position: relative;
+  width: auto;
+  min-width: 14rem;
+  max-width: 337px;
+  padding-inline-end: 2rem;
+  background-color: var(--modus-wc-color-white);
+}
+
+.pm-accounting-period-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--modus-wc-color-gray-6);
+}
+
 .pm-record-count {
   display: flex;
   align-items: center;
@@ -453,18 +569,19 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
 }
 
 .pm-sticky-footer {
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  bottom: var(--padding-card);
+  left: 64px;
+  right: 64px;
   z-index: 20;
-  margin-top: auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--modus-wc-spacing-md);
   height: 32px;
   min-height: 32px;
-  background: transparent;
+  background-color: var(--modus-wc-color-base-page);
   border: none;
   box-shadow: none;
 }
@@ -478,12 +595,22 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
 .pm-sticky-footer-actions {
   display: flex;
   align-items: center;
+  flex: none;
+  flex-shrink: 0;
+  margin-left: auto;
   height: 32px;
   gap: var(--modus-wc-spacing-sm);
 }
 
+.pm-sticky-footer-actions modus-wc-button {
+  display: inline-flex;
+  flex: none;
+}
+
 /* Validate & Continue — Figma primary CTA (159×32) */
 .pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn {
+  --tw-bg-opacity: 1 !important;
+  --tw-text-opacity: 1 !important;
   box-sizing: border-box;
   display: inline-flex;
   flex-direction: row;
@@ -497,23 +624,34 @@ html.dark .app-shell modus-wc-navbar .modus-wc-navbar::before {
   padding: 0 12px;
   border: none;
   border-radius: var(--modus-wc-border-radius-lg);
-  background-color: var(--modus-wc-color-trimble-blue);
+  background-color: var(--modus-wc-color-trimble-blue) !important;
   font-family: var(--font-sans);
   font-size: var(--modus-wc-font-size-md);
   font-weight: var(--modus-wc-font-weight-semibold);
   line-height: 14px;
-  color: var(--modus-wc-color-white);
+  color: var(--modus-wc-color-white) !important;
   box-shadow: none;
 }
 
-.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:hover:not(:disabled) {
-  background-color: var(--modus-wc-color-trimble-blue);
-  color: var(--modus-wc-color-white);
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:hover:not(:disabled):not(.modus-wc-btn-disabled) {
+  background-color: var(--modus-wc-color-trimble-blue) !important;
+  color: var(--modus-wc-color-white) !important;
 }
 
-.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:disabled {
-  opacity: 0.3;
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn:disabled,
+.pm-sticky-footer-actions modus-wc-button .modus-wc-btn.pm-validate-continue-btn.modus-wc-btn-disabled {
+  --tw-bg-opacity: 1 !important;
+  --tw-text-opacity: 1 !important;
+  opacity: 1 !important;
   cursor: not-allowed;
+  background-color: color-mix(
+    in srgb,
+    var(--modus-wc-color-trimble-blue) 60%,
+    var(--modus-wc-color-white)
+  ) !important;
+  color: var(--modus-wc-color-white) !important;
+  border: none;
+  visibility: visible;
 }
 
 .pm-alert-row {
@@ -543,15 +681,26 @@ modus-wc-alert .modus-wc-alert.pm-batch-alert {
   grid-auto-flow: unset;
   grid-template-columns: unset;
   text-align: start;
+  background-color: var(--modus-wc-color-warning-pale);
+  border: 1px solid var(--modus-wc-color-warning);
 }
 
 modus-wc-alert .modus-wc-alert.pm-batch-alert .description {
+  flex: 1;
   font-size: var(--modus-wc-font-size-sm);
   line-height: 1.25;
+  color: var(--modus-wc-color-gray-10);
 }
 
-modus-wc-alert .modus-wc-alert.pm-batch-alert modus-wc-icon i.modus-wc-icon {
-  font-size: 1rem;
+modus-wc-alert .modus-wc-alert.pm-batch-alert modus-wc-icon i.modus-wc-icon.modus-wc-alert-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+  font-size: 16px;
+  line-height: 16px;
+  color: var(--modus-wc-color-warning);
 }
 
 /* View Batches — Figma warning outlined CTA (#E49325 → --modus-wc-color-warning) */
@@ -628,9 +777,133 @@ modus-wc-table .modus-wc-table th.sortable {
   padding-right: 1.5rem;
 }
 
+modus-wc-table .modus-wc-table.pm-interface-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table th,
+modus-wc-table .modus-wc-table.pm-interface-table td {
+  border: 1px solid var(--modus-wc-color-gray-0);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table thead th {
+  background-color: var(--modus-wc-color-white);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  color: var(--modus-wc-color-gray-10);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table thead > tr:first-child > th {
+  border-bottom: 4px solid var(--modus-wc-color-gray-0);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tr.pm-column-filter-row th {
+  box-sizing: border-box;
+  height: 24px;
+  min-height: 24px;
+  max-height: 24px;
+  padding-block: 3px;
+  padding-inline: var(--modus-wc-spacing-sm);
+  background-color: var(--modus-wc-color-white);
+  font-weight: var(--modus-wc-font-weight-normal);
+  text-align: left;
+  vertical-align: middle;
+  line-height: 0;
+  overflow: hidden;
+  border-top: none;
+  border-bottom: 1px solid var(--modus-wc-color-gray-0);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody > tr:first-child > td {
+  border-top: none;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table.modus-wc-table-density-compact tr.pm-column-filter-row th {
+  height: 24px;
+  min-height: 24px;
+  max-height: 24px;
+  padding-block: 3px;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tr.pm-column-filter-row th.pm-table-col-numeric {
+  text-align: left;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tr.pm-column-filter-row th modus-wc-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 16px;
+  height: 16px;
+  color: var(--modus-wc-color-gray-6);
+  vertical-align: top;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tr.pm-column-filter-row th modus-wc-icon i.modus-wc-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:nth-child(odd) {
+  background-color: var(--modus-wc-color-white);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:nth-child(even) {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:nth-child(odd) td,
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:nth-child(even) td {
+  background-color: inherit;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr[data-selected='true'],
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:has(input[type='checkbox']:checked):nth-child(odd) {
+  background-color: var(--modus-wc-color-white);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:has(input[type='checkbox']:checked):nth-child(even) {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:has(input[type='checkbox']:disabled):nth-child(odd) {
+  background-color: var(--modus-wc-color-white);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:has(input[type='checkbox']:disabled):nth-child(even) {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tbody tr:has(input[type='checkbox']:disabled) td {
+  color: var(--modus-wc-color-gray-6);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table modus-wc-badge.pm-status-badge .modus-wc-badge {
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table modus-wc-badge.pm-status-yet-to-validate .modus-wc-badge {
+  color: var(--modus-wc-color-gray-10);
+  border-color: var(--modus-wc-color-gray-2);
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table modus-wc-badge.pm-status-unposted .modus-wc-badge {
+  color: var(--modus-wc-color-warning);
+  border-color: rgb(228 147 37 / 0.5);
+  background-color: var(--modus-wc-color-warning-pale);
+}
+
 /* Sort icons only after a column is actively sorted (not on every header) */
 modus-wc-table .modus-wc-table th.sortable .sort-icon {
-  display: none;
+  display: none !important;
 }
 
 modus-wc-table .modus-wc-table th.sortable[aria-sort='ascending'] .sort-icon,
@@ -668,9 +941,54 @@ modus-wc-table modus-wc-icon i.modus-icons-solid {
   font-feature-settings: 'liga';
 }
 
+/* Selection column — centered 16×16 checkboxes */
+modus-wc-table .modus-wc-table.pm-interface-table th.selection-column,
+modus-wc-table .modus-wc-table.pm-interface-table td.selection-column {
+  text-align: center;
+  vertical-align: middle;
+  padding-inline: 0;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table thead > tr:first-child > th.selection-column {
+  border-top-left-radius: var(--modus-wc-border-radius-lg);
+  border-top-right-radius: var(--modus-wc-border-radius-lg);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table thead > tr:first-child > th:last-child {
+  border-top-right-radius: var(--modus-wc-border-radius-lg);
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table tr.pm-column-filter-row th:first-child {
+  text-align: center;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table .selection-column modus-wc-checkbox.modus-wc-checkbox-host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+}
+
+modus-wc-table .modus-wc-table.pm-interface-table .selection-column input[type='checkbox'].modus-wc-checkbox {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: 0;
+  border-radius: 4px;
+}
+
 /* Checkboxes — Figma 4px corner radius */
 modus-wc-checkbox input[type='checkbox'].modus-wc-checkbox {
   border-radius: 4px;
+}
+
+modus-wc-table .modus-wc-table tbody tr:has(input[type='checkbox']:disabled) input[type='checkbox'].modus-wc-checkbox {
+  background-color: var(--modus-wc-color-gray-2);
+  border-color: var(--modus-wc-color-gray-2);
+  opacity: 1;
 }
 
 .pm-table-scroll {
@@ -684,6 +1002,2613 @@ modus-wc-card .modus-wc-card.pm-table-card {
   box-shadow: none;
 }
 
+modus-wc-card .modus-wc-card.pm-table-card .modus-wc-card-body {
+  padding-inline: 0;
+}
+
 modus-wc-card .modus-wc-card.pm-table-card:hover {
   box-shadow: none;
 }
+
+.page-main-validated {
+  padding-bottom: calc(88px + var(--padding-card) + var(--modus-wc-spacing-md));
+}
+
+/* Validation overlay */
+.pm-validation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(23 28 30 / 0.72);
+  pointer-events: all;
+}
+
+.pm-validation-overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: #ffffff;
+}
+
+.pm-validation-spinner {
+  position: relative;
+  display: grid;
+  width: 120px;
+  height: 120px;
+  color: #ffffff;
+  place-items: center;
+}
+
+.pm-validation-spinner-svg {
+  width: 120px;
+  height: 120px;
+  color: #ffffff;
+  transform: rotate(-90deg);
+}
+
+.pm-validation-overlay .pm-validation-spinner-svg circle {
+  fill: none !important;
+  stroke-width: 8px;
+}
+
+.pm-validation-overlay .pm-validation-spinner-track {
+  stroke: rgba(255, 255, 255, 0.28) !important;
+}
+
+.pm-validation-overlay .pm-validation-spinner-progress {
+  stroke: #ffffff !important;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+.pm-validation-percent {
+  position: absolute;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 1;
+  color: #ffffff;
+}
+
+.pm-validation-message,
+.pm-validation-message p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: 1.25;
+  color: #ffffff !important;
+  text-align: center;
+}
+
+/* Validated status badge */
+modus-wc-table .modus-wc-table.pm-interface-table modus-wc-badge.pm-status-validated .modus-wc-badge {
+  color: var(--modus-wc-color-green-dark);
+  border-color: rgb(30 138 68 / 0.35);
+  background-color: var(--modus-wc-color-success-pale);
+}
+
+.page-main-validated
+  .pm-interface-table
+  thead
+  .selection-column
+  modus-wc-checkbox {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.page-main-validated
+  .pm-interface-table
+  tbody
+  .selection-column
+  modus-wc-checkbox {
+  pointer-events: none;
+}
+
+/* Clear Validation */
+modus-wc-button .modus-wc-btn.pm-clear-validation-btn {
+  min-width: auto;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--modus-wc-color-gray-10);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: transparent;
+  color: var(--modus-wc-color-gray-10);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+modus-wc-button .modus-wc-btn.pm-clear-validation-btn:hover {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+/* Audit Reports bar */
+.pm-audit-reports {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-md);
+  min-height: 40px;
+  padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+  background-color: var(--modus-wc-color-gray-light);
+  border-radius: var(--modus-wc-border-radius-lg);
+}
+
+.pm-audit-reports-title,
+.pm-audit-reports-title p {
+  margin: 0;
+  color: var(--modus-wc-color-gray-10);
+  white-space: nowrap;
+}
+
+.pm-audit-reports-checkboxes {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-md);
+  min-width: 0;
+}
+
+.pm-audit-reports-checkboxes modus-wc-checkbox.pm-audit-report-checkbox {
+  flex: none;
+}
+
+.pm-audit-reports-checkboxes
+  modus-wc-checkbox.pm-audit-report-checkbox-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.pm-audit-reports-checkboxes
+  modus-wc-checkbox.pm-audit-report-checkbox-disabled
+  .modus-wc-input-label,
+.pm-audit-reports-checkboxes
+  modus-wc-checkbox.pm-audit-report-checkbox-disabled
+  label {
+  color: var(--modus-wc-color-base-content-low-contrast);
+}
+
+.pm-audit-reports-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  margin-left: auto;
+}
+
+modus-wc-button .modus-wc-btn.pm-audit-action-btn {
+  min-width: auto;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--modus-wc-color-gray-10);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: transparent;
+  color: var(--modus-wc-color-gray-10);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+modus-wc-button .modus-wc-btn.pm-audit-action-btn:hover {
+  background-color: var(--modus-wc-color-white);
+}
+
+/* Validated footer */
+.pm-sticky-footer-validated {
+  gap: var(--modus-wc-spacing-md);
+}
+
+.pm-footer-batch-info {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: var(--modus-wc-spacing-xs);
+  min-width: 0;
+}
+
+.pm-footer-info-text {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25;
+  color: var(--modus-wc-color-gray-10);
+}
+
+.pm-footer-batch-info .pm-footer-info-icon,
+.pm-footer-batch-info modus-wc-icon i.modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
+
+modus-wc-button .modus-wc-btn.pm-interface-btn {
+  --tw-bg-opacity: 1 !important;
+  --tw-text-opacity: 1 !important;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 96px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-trimble-blue) !important;
+  font-size: var(--modus-wc-font-size-md);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 14px;
+  color: var(--modus-wc-color-white) !important;
+}
+
+modus-wc-button .modus-wc-btn.pm-interface-btn:disabled,
+modus-wc-button .modus-wc-btn.pm-interface-btn.modus-wc-btn-disabled {
+  --tw-bg-opacity: 1 !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+  background-color: color-mix(
+    in srgb,
+    var(--modus-wc-color-trimble-blue) 60%,
+    var(--modus-wc-color-white)
+  ) !important;
+  color: var(--modus-wc-color-white) !important;
+}
+
+/* Validation toolbar — error report + clear */
+.pm-validation-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+modus-wc-button .modus-wc-btn.pm-view-error-report-btn {
+  min-width: auto;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  gap: var(--modus-wc-spacing-xs);
+  border: 1px solid var(--modus-wc-color-warning);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: transparent;
+  color: var(--modus-wc-color-warning);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+modus-wc-button .modus-wc-btn.pm-view-error-report-btn:hover {
+  background-color: var(--modus-wc-color-warning-pale);
+}
+
+/* Table — error in validation status cell */
+.pm-validation-error-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pm-validation-error-status-text {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25;
+  color: var(--modus-wc-color-red);
+  white-space: nowrap;
+}
+
+.pm-validation-error-status-icon,
+.pm-validation-error-status modus-wc-icon i.modus-wc-icon {
+  color: var(--modus-wc-color-red);
+  font-size: 14px;
+}
+
+/* Validation failure toast */
+modus-wc-alert .modus-wc-alert.pm-validation-error-toast {
+  position: fixed;
+  bottom: calc(32px + var(--padding-card) + var(--modus-wc-spacing-md) + 48px);
+  left: 50%;
+  z-index: 30;
+  width: min(640px, calc(100% - 128px));
+  min-height: 40px;
+  padding: 0 var(--modus-wc-spacing-sm);
+  transform: translateX(-50%);
+  background-color: #fce0e2;
+  border: 1px solid var(--modus-wc-color-red);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow: 0 4px 12px rgb(23 28 30 / 0.12);
+}
+
+modus-wc-alert .modus-wc-alert.pm-validation-error-toast .description {
+  font-size: var(--modus-wc-font-size-sm);
+  color: var(--modus-wc-color-red-dark);
+}
+
+modus-wc-alert .modus-wc-alert.pm-validation-error-toast modus-wc-icon i.modus-wc-icon.modus-wc-alert-icon {
+  color: var(--modus-wc-color-red);
+}
+
+/* Interface success toast */
+modus-wc-alert .modus-wc-alert.pm-interface-success-toast {
+  position: fixed;
+  bottom: calc(32px + var(--padding-card) + var(--modus-wc-spacing-md));
+  left: 50%;
+  z-index: 30;
+  width: min(640px, calc(100% - 128px));
+  min-height: 40px;
+  padding: 0 var(--modus-wc-spacing-sm);
+  transform: translateX(-50%);
+  background-color: var(--modus-wc-color-success-pale);
+  border: 1px solid var(--modus-wc-color-green);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow: 0 4px 12px rgb(23 28 30 / 0.12);
+}
+
+modus-wc-alert .modus-wc-alert.pm-interface-success-toast .description {
+  font-size: var(--modus-wc-font-size-sm);
+  color: var(--modus-wc-color-green-dark);
+}
+
+modus-wc-alert .modus-wc-alert.pm-interface-success-toast modus-wc-icon i.modus-wc-icon.modus-wc-alert-icon {
+  color: var(--modus-wc-color-green);
+}
+
+/* PM Subcontracts */
+.sl-page-list,
+.sl-page-detail {
+  gap: var(--modus-wc-spacing-md);
+}
+
+/* Detail page fills the viewport: summary, toolbar, card, footer. Only the card
+   row flexes, so the card height is definite and its content can own the scroll. */
+.page-main.sl-page-detail {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+/* The toast is fixed-positioned internally; keep its host out of the grid rows */
+.page-main.sl-page-detail > modus-wc-alert {
+  display: contents;
+}
+
+/* The list page fills the viewport so the grid, not the page, owns scrolling */
+.sl-page-list {
+  flex: 1;
+  min-height: 0;
+  padding-bottom: var(--modus-wc-spacing-lg);
+}
+
+.sl-header-card.modus-wc-card {
+  background-color: var(--modus-wc-color-base-100);
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow: none;
+}
+
+.sl-list-header-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--modus-wc-spacing-md);
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+.pm-project-card .sl-list-header-grid {
+  align-items: center;
+}
+
+.pm-project-card.modus-wc-card .modus-wc-card-body {
+  height: 100px;
+  box-sizing: border-box;
+}
+
+/* min-height rather than a fixed height that flips to auto on expand: the
+   collapsed strip still measures 100px, and expanding only adds height below
+   it instead of relaying out the whole body. */
+.sl-detail-summary-card.modus-wc-card .modus-wc-card-body {
+  min-height: 100px;
+  box-sizing: border-box;
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+.sl-list-header-fields {
+  min-width: 0;
+}
+
+.sl-header-summary-panel {
+  padding-block-start: var(--modus-wc-spacing-sm);
+}
+
+.sl-totals-panel {
+  width: 100%;
+  max-width: 46rem;
+  overflow-x: auto;
+}
+
+.sl-totals-grand-label {
+  font-weight: var(--modus-wc-font-weight-semibold);
+  color: var(--modus-wc-color-gray-10);
+}
+
+.sl-totals-number {
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-totals-panel .sl-totals-col-numeric {
+  text-align: right;
+}
+
+.sl-list-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  margin-inline-start: auto;
+}
+
+.sl-list-primary-toolbar {
+  align-items: center;
+}
+
+.sl-list-primary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  margin-inline-start: auto;
+}
+
+/* Grid toolbar — Figma PM Subcontracts "toolbar" (h 40, 8px inset, 24px controls, 4px gaps) */
+.sl-grid-toolbar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-md);
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  padding-inline: var(--modus-wc-spacing-sm);
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-base-page);
+}
+
+.sl-distribution-toolbar {
+  border: none;
+  border-radius: 0;
+  padding-inline: 0;
+  background-color: transparent;
+}
+
+.sl-detail-toolbar {
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 40px;
+  padding-block: var(--modus-wc-spacing-xs);
+  background-color: var(--modus-wc-color-white);
+}
+
+.sl-detail-toolbar-left {
+  gap: 4px;
+}
+
+.sl-detail-toolbar-pager {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0;
+  height: 24px;
+}
+
+.sl-detail-toolbar-page,
+.sl-detail-toolbar-page p {
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--modus-wc-color-gray-10);
+}
+
+.sl-grid-toolbar-group {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  height: 24px;
+}
+
+/* Joined segments (icon + caret) sit flush, with no gap between them */
+.sl-grid-toolbar .sl-tb-split {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 24px;
+}
+
+/* 1px rule centered in an 8px slot */
+.sl-grid-toolbar modus-wc-divider {
+  display: flex;
+  flex: none;
+  width: 8px;
+  min-width: 8px;
+  height: 24px;
+}
+
+.sl-grid-toolbar .modus-wc-divider.sl-tb-divider {
+  width: 8px;
+  min-width: 8px;
+  height: 24px;
+  margin: 0;
+  gap: 0;
+}
+
+.sl-grid-toolbar .modus-wc-divider.sl-tb-divider::before,
+.sl-grid-toolbar .modus-wc-divider.sl-tb-divider::after {
+  width: 1px;
+  min-width: 1px;
+  background-color: var(--modus-wc-color-gray-0) !important;
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--modus-wc-spacing-xs);
+  height: 24px;
+  min-height: 24px;
+  min-width: 0;
+  padding-inline: var(--modus-wc-spacing-sm);
+  border: none;
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: 16px;
+  color: var(--modus-wc-color-base-content);
+  box-shadow: none;
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn:hover:not(:disabled) {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn:disabled {
+  opacity: 1;
+  color: var(--modus-wc-color-gray-4);
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn-pill {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn-icon {
+  width: 24px;
+  min-width: 24px;
+  padding-inline: var(--modus-wc-spacing-xs);
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn-caret {
+  width: 16px;
+  min-width: 16px;
+  padding-inline: 2px;
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn-danger:not(:disabled) {
+  color: var(--modus-wc-color-red);
+}
+
+.sl-grid-toolbar modus-wc-button .modus-wc-btn.sl-tb-btn-danger:disabled {
+  color: color-mix(in srgb, var(--modus-wc-color-red) 45%, transparent);
+}
+
+.sl-grid-toolbar .sl-tb-btn-text {
+  white-space: nowrap;
+}
+
+/* Labeled controls carry 12px glyphs; icon-only controls carry 16px */
+.sl-grid-toolbar modus-wc-button .sl-tb-btn-labeled modus-wc-icon i.modus-wc-icon,
+.sl-grid-toolbar modus-wc-button .sl-tb-btn-caret modus-wc-icon i.modus-wc-icon {
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.sl-grid-toolbar modus-wc-button .sl-tb-btn-icon modus-wc-icon i.modus-wc-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.sl-grid-toolbar modus-wc-button .sl-tb-btn modus-wc-icon i.modus-icons-outlined {
+  font-family: 'modus-icons-outlined', 'modus-icons', sans-serif;
+  font-feature-settings: 'liga';
+}
+
+.sl-col-header-label {
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+/* Height chain from the page column down to the scroll box: host -> article ->
+   card body -> content stack. Any link that misses min-height: 0 lets the table
+   push the page taller instead of scrolling inside its own frame. */
+.sl-table-card-host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.sl-table-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sl-table-card .modus-wc-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding-block-start: 0;
+}
+
+.sl-table-scroll {
+  width: 100%;
+  flex: 1;
+  min-height: 12rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  background-color: var(--modus-wc-color-white);
+}
+
+.sl-subcontracts-table {
+  --sl-row-height: 40px;
+  --sl-filter-row-height: 24px;
+  --sl-select-col-width: 2.75rem;
+  --sl-grid-header-stroke: 4px;
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--modus-wc-font-size-sm);
+}
+
+/* Fixed row height with centered content, so header, search, and data rows
+   all land on the same 40px rhythm regardless of what a cell holds */
+.sl-subcontracts-table th,
+.sl-subcontracts-table td {
+  box-sizing: border-box;
+  height: var(--sl-row-height);
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--modus-wc-color-gray-0);
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--modus-wc-color-gray-10);
+  background-color: var(--modus-wc-color-white);
+}
+
+.sl-subcontracts-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  font-weight: var(--modus-wc-font-weight-semibold);
+  color: var(--modus-wc-color-gray-6);
+  background-color: var(--modus-wc-color-white);
+}
+
+/* Two stacked header rows: labels on top, a dedicated per-column search row below.
+   The 4px stroke sits under the title row, matching the PM Interface table. */
+.sl-subcontracts-table thead tr.sl-column-header-row th {
+  top: 0;
+  border-bottom: var(--sl-grid-header-stroke) solid var(--modus-wc-color-gray-0);
+}
+
+.sl-subcontracts-table thead tr.sl-column-filter-row th {
+  top: var(--sl-row-height);
+  height: var(--sl-filter-row-height);
+  padding-inline: 0.75rem;
+}
+
+/* width: 0 + min-width: 100% keeps the field full-bleed without letting the
+   native input's default character width widen the column */
+.sl-column-filter-row modus-wc-text-input {
+  display: block;
+  width: 0;
+  min-width: 100%;
+}
+
+.sl-column-filter-row label.sl-column-filter-input {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-2xs);
+  width: 100%;
+  /* Sits inside the cell's content box: the row height already includes the
+     1px rules above and below, so the field has to give those back */
+  height: calc(var(--sl-filter-row-height) - 2px);
+  min-height: 0;
+  padding-inline: 0;
+  border: none;
+  border-radius: var(--modus-wc-border-radius-sm);
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.sl-subcontracts-table
+  thead
+  tr.sl-column-filter-row
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-sm {
+  padding-inline: 0;
+}
+
+.sl-column-filter-row label.sl-column-filter-input:focus-within {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-column-filter-row label.sl-column-filter-input input.modus-wc-grow {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 20px;
+  color: var(--modus-wc-color-gray-10);
+  box-shadow: none;
+}
+
+.sl-column-filter-row
+  label.sl-column-filter-input
+  .modus-wc-text-input-icon-search {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-subcontracts-table tbody tr:nth-child(odd) td {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-subcontracts-table tbody tr:nth-child(even) td {
+  background-color: var(--modus-wc-color-white);
+}
+
+/* Row selection sits ahead of the frozen Subcontract column, so both travel
+   together and the 4px stroke stays at the end of the frozen group */
+.sl-sticky-col.sl-select-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: var(--sl-select-col-width);
+  min-width: var(--sl-select-col-width);
+  padding-inline: 0;
+  text-align: center;
+}
+
+.sl-select-col modus-wc-checkbox {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.sl-select-col .modus-wc-form-control {
+  gap: 0;
+}
+
+.sl-select-col input[type='checkbox'].modus-wc-checkbox {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: 0;
+  border-radius: 4px;
+}
+
+.sl-sticky-col.sl-subcontract-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  min-width: 7.5rem;
+  border-right: 4px solid var(--modus-wc-color-gray-0);
+  box-shadow: none;
+}
+
+.sl-sticky-col.sl-actions-col {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  min-width: 4.5rem;
+  width: 4.5rem;
+  text-align: center;
+  border-left: 4px solid var(--modus-wc-color-gray-0);
+  box-shadow: none;
+}
+
+.sl-subcontracts-table thead th.sl-sticky-col.sl-select-col,
+.sl-subcontracts-table thead th.sl-sticky-col.sl-subcontract-col,
+.sl-subcontracts-table thead th.sl-sticky-col.sl-actions-col {
+  z-index: 5;
+}
+
+.sl-table-col-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-table-col-boolean {
+  text-align: center;
+}
+
+.sl-table-col-boolean modus-wc-checkbox {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.sl-table-col-boolean .modus-wc-form-control {
+  gap: 0;
+  justify-content: center;
+}
+
+.sl-table-col-boolean input[type='checkbox'].modus-wc-checkbox {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: 0;
+  border-radius: 4px;
+}
+
+/* Numeric columns read right-to-left, so the filter field mirrors: the search
+   icon moves to the trailing edge and typed values line up with the amounts */
+.sl-column-filter-row th.sl-table-col-numeric label.sl-column-filter-input {
+  flex-direction: row-reverse;
+}
+
+.sl-column-filter-row
+  th.sl-table-col-numeric
+  label.sl-column-filter-input
+  input.modus-wc-grow {
+  text-align: right;
+}
+
+.sl-subcontracts-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-select-col,
+.sl-subcontracts-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-subcontract-col {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-subcontracts-table tbody tr:nth-child(even) td.sl-sticky-col.sl-select-col,
+.sl-subcontracts-table tbody tr:nth-child(even) td.sl-sticky-col.sl-subcontract-col {
+  background-color: var(--modus-wc-color-white);
+}
+
+
+.sl-subcontracts-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-subcontracts-table tbody tr:nth-child(even) td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-white);
+}
+
+/* Declared after every zebra rule so the selection tint wins on frozen cells
+   too, where the striping selectors carry the same specificity */
+.sl-subcontracts-table tbody tr.sl-row-selected td,
+.sl-subcontracts-table tbody tr.sl-row-selected td.sl-sticky-col.sl-select-col,
+.sl-subcontracts-table tbody tr.sl-row-selected td.sl-sticky-col.sl-subcontract-col,
+.sl-subcontracts-table tbody tr.sl-row-selected td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-primary-pale);
+}
+
+.sl-actions-col {
+  width: 4.5rem;
+  text-align: center;
+}
+
+/* gray-6 is #6a6e79 — set on the icon rather than the button so the tone holds
+   through the borderless button's hover and focus states */
+.sl-subcontracts-table td.sl-actions-col modus-wc-button .modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
+
+/* customClass lands directly on the badge's inner <span>, so it already
+   carries "modus-wc-badge" itself -- no nested ".modus-wc-badge" descendant */
+.sl-subcontracts-table span.sl-status-badge {
+  white-space: nowrap;
+}
+
+span.sl-status-badge.sl-status-badge-pending {
+  background-color: rgb(255 245 228 / 60%) !important;
+}
+
+span.sl-status-badge.sl-status-badge-neutral {
+  background-color: #f5f5f8 !important;
+  border-color: #171c1e !important;
+  color: #171c1e !important;
+}
+
+.sl-empty-row {
+  text-align: center;
+  color: var(--modus-wc-color-gray-6);
+  padding: var(--modus-wc-spacing-lg) !important;
+}
+
+.sl-detail-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-md);
+}
+
+.sl-detail-summary-top {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+.sl-detail-title p,
+.sl-detail-title {
+  margin: 0;
+}
+
+.sl-detail-summary-card.modus-wc-card,
+.sl-detail-card.modus-wc-card {
+  background-color: var(--modus-wc-color-white);
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+  box-shadow: none;
+}
+
+.sl-detail-summary-card.modus-wc-card {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+/* The grid row above gives the host a definite height; percentages then resolve
+   predictably through the Stencil-rendered article and body. */
+.page-main.sl-page-detail > modus-wc-card {
+  height: 100%;
+  min-height: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.page-main.sl-page-detail > modus-wc-card > article.modus-wc-card.sl-detail-card {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sl-detail-summary-card.modus-wc-card:hover,
+.sl-detail-card.modus-wc-card:hover {
+  box-shadow: none;
+}
+
+.sl-detail-summary-strip {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-xl);
+  width: 100%;
+  min-width: 0;
+}
+
+/* Top-aligned so every label sits on one line regardless of whether the value
+   below it is text or a taller badge. */
+.sl-detail-summary-fields {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--modus-wc-spacing-xl);
+  min-width: 0;
+}
+
+.sl-detail-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-xs);
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+/* Content-width, never grow: a stretched box leaves dead space after its text,
+   which reads as an uneven gap. Slack collects once, before the actions. */
+.sl-detail-summary-item-project-desc,
+.sl-detail-summary-item-subcontract-desc {
+  flex: 0 1 auto;
+  min-width: 4rem;
+  max-width: 20rem;
+}
+
+.sl-detail-summary-item .sl-detail-summary-value,
+.sl-detail-summary-item .sl-status-badge {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Both states share one box. Centering the collapse inside a shorter host while
+   collapsed, then switching to block flow on expand, is what made the strip
+   jump 9px the moment the panel opened. */
+.sl-detail-summary-collapse-host {
+  display: block;
+  width: 100%;
+}
+
+.sl-detail-summary-collapse-host modus-wc-collapse {
+  display: block;
+  width: 100%;
+}
+
+.sl-detail-summary-collapse-host:not([data-expanded='true']) [slot='content'] {
+  display: none !important;
+}
+
+.sl-detail-summary-collapse {
+  display: block;
+  width: 100%;
+}
+
+/* The details carries both classes, so this has to be a compound selector — as
+   a descendant selector it matched nothing and Modus's 12px bottom margin
+   survived. */
+.sl-detail-summary-collapse-host modus-wc-collapse .modus-wc-collapse.sl-detail-summary-collapse {
+  margin-bottom: 0;
+  background-color: transparent;
+}
+
+.sl-detail-summary-collapse-host modus-wc-collapse .modus-wc-collapse-arrow > .modus-wc-collapse-title::before,
+.sl-detail-summary-collapse-host modus-wc-collapse .modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
+  display: none;
+}
+
+/* 68px here plus the card body's 16px insets is the 100px collapsed strip, and
+   holding that height in both states keeps the strip pinned while the panel
+   opens. Specificity has to clear Modus's own 60px/1rem title rule. */
+.sl-detail-summary-collapse-host
+  modus-wc-collapse
+  .modus-wc-collapse.sl-detail-summary-collapse
+  > .modus-wc-collapse-title {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 68px;
+  padding: 0;
+  align-items: center;
+}
+
+.sl-detail-summary-collapse .modus-wc-summary-main-content {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Modus animates this row's padding open but the native <details> hides it
+   instantly on close, so the panel only ever eased in one direction. Zeroing
+   the padding also lines the totals up with the strip above. */
+.sl-detail-summary-collapse-host
+  modus-wc-collapse
+  .modus-wc-collapse.sl-detail-summary-collapse
+  > .modus-wc-collapse-content {
+  padding: 0;
+  transition: none;
+}
+
+.sl-detail-summary-collapse-host[data-expanded='true'] .sl-detail-summary-expanded {
+  border-top: 1px solid var(--modus-wc-color-gray-0);
+  margin-top: var(--modus-wc-spacing-sm);
+  padding-top: var(--modus-wc-spacing-sm);
+}
+
+.sl-detail-summary-expanded {
+  min-width: 0;
+}
+
+.sl-detail-summary-totals {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--modus-wc-spacing-xl);
+  align-items: flex-start;
+}
+
+.sl-detail-summary-total-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-xs);
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.sl-detail-summary-value-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-detail-summary-trailing {
+  display: flex;
+  align-items: center;
+  flex: none;
+  margin-inline-start: auto;
+  align-self: center;
+}
+
+/* White filled controls so header actions read against the gray-light summary bar. */
+.sl-detail-summary-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  flex: none;
+}
+
+.sl-detail-summary-actions
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-neutral.sl-detail-summary-action-btn {
+  background-color: var(--modus-wc-color-white);
+  border-color: var(--modus-wc-color-gray-0);
+  color: var(--modus-wc-color-base-content);
+  box-shadow: none;
+}
+
+.sl-detail-summary-actions
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-neutral.sl-detail-summary-action-btn:hover:not(
+    :disabled
+  ) {
+  background-color: var(--modus-wc-color-base-100);
+  border-color: var(--modus-wc-color-gray-0);
+}
+
+.sl-detail-summary-workflow-action[hidden],
+.sl-detail-summary-submit-action[hidden] {
+  display: none;
+}
+
+.sl-detail-summary-chevron {
+  flex: none;
+  color: var(--modus-wc-color-gray-8);
+}
+
+.sl-detail-summary-toggle {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  color: var(--modus-wc-color-gray-8);
+}
+
+/* Never wrap: a two-line label pushes its value out of the shared row. */
+.sl-detail-summary-label {
+  font-size: 12px;
+  font-weight: var(--modus-wc-font-weight-semibold);
+  color: var(--modus-wc-color-gray-6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sl-detail-summary-value {
+  font-size: var(--modus-wc-font-size-md);
+  color: var(--modus-wc-color-gray-10);
+}
+
+.sl-workflow-reviewers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-sm);
+  min-width: min(32rem, 100%);
+}
+
+.sl-workflow-reviewers modus-wc-typography p {
+  margin-bottom: 0;
+}
+
+.sl-workflow-reviewer-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sl-workflow-reviewer {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  border: 1px solid var(--modus-wc-color-base-200);
+  border-radius: var(--modus-wc-border-radius-sm);
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-workflow-reviewer-step,
+.sl-workflow-reviewer-limit,
+.sl-workflow-reviewer-optional {
+  color: var(--modus-wc-color-base-content-low-contrast);
+  font-size: var(--modus-wc-font-size-sm);
+}
+
+.sl-workflow-reviewer-user {
+  color: var(--modus-wc-color-base-content);
+  font-size: var(--modus-wc-font-size-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+.sl-detail-card.modus-wc-card .modus-wc-card-body {
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Modus always renders an empty actions row after the body content, and its
+   4px bottom margin shrinks the layout enough to expose a strip of card
+   background above the bottom border. */
+.sl-detail-card.modus-wc-card .modus-wc-card-body > .modus-wc-card-actions,
+.sl-detail-summary-card.modus-wc-card .modus-wc-card-body > .modus-wc-card-actions {
+  margin-bottom: 0;
+}
+
+.sl-detail-layout {
+  display: grid;
+  grid-template-columns: 13.5rem minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sl-detail-layout.sl-detail-layout-nav-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sl-detail-layout.sl-detail-layout-nav-collapsed .sl-detail-nav {
+  display: none;
+}
+
+.sl-detail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-2xs);
+  padding: var(--modus-wc-spacing-sm);
+  background-color: var(--modus-wc-color-base-page);
+  border-inline-end: 1px solid var(--modus-wc-color-gray-0);
+  border-start-start-radius: var(--modus-wc-border-radius-lg);
+  border-end-start-radius: var(--modus-wc-border-radius-lg);
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.sl-detail-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-xs);
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--modus-wc-color-gray-8);
+  font: inherit;
+  font-size: var(--modus-wc-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.sl-detail-nav-item-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+span.modus-wc-badge.modus-wc-badge-outlined.sl-detail-nav-badge,
+.sl-detail-content-heading span.modus-wc-badge.sl-detail-content-count {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: 999px;
+  background-color: var(--modus-wc-color-white);
+  color: var(--modus-wc-color-gray-10);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.sl-count-badge-value {
+  display: contents;
+}
+
+.sl-detail-content-heading > span[hidden] {
+  display: none !important;
+}
+
+.sl-detail-nav-item:hover {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-detail-nav-item-active,
+.sl-detail-nav-item.sl-detail-nav-item-active {
+  background-color: var(--modus-wc-color-blue-pale);
+  color: #0063a3;
+  font-weight: 700;
+}
+
+.sl-detail-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  padding-block: 16px;
+  padding-inline: 24px;
+  background-color: var(--modus-wc-color-white);
+}
+
+.sl-detail-content-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  margin-bottom: var(--modus-wc-spacing-md);
+  color: var(--modus-wc-color-gray-10);
+}
+
+.sl-detail-content-header-tight {
+  margin-bottom: var(--modus-wc-spacing-xs);
+}
+
+.sl-detail-content-body {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sl-detail-nav-toggle {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+}
+
+.sl-detail-content-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  min-width: 0;
+}
+
+.sl-panel-toggle-icon {
+  display: block;
+  flex: none;
+}
+
+.sl-detail-content-title,
+.sl-detail-content-title p {
+  margin: 0;
+}
+
+.sl-detail-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+  padding-block: 0;
+  background-color: var(--modus-wc-color-base-page);
+}
+
+.sl-information-tab,
+.sl-notes-tab,
+.sl-attachment-tab,
+.sl-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sl-form-section-title,
+.sl-form-section-title p {
+  margin: 0;
+  color: var(--modus-wc-color-gray-8);
+}
+
+.sl-form-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-lg);
+  margin-inline-start: var(--modus-wc-spacing-lg);
+}
+
+.sl-notes-tab {
+  padding-inline-start: 8px;
+}
+
+.sl-notes-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sl-form-label-control-gap, 4px);
+  width: 50%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.sl-notes-field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--modus-wc-spacing-sm);
+  min-width: 0;
+}
+
+.sl-notes-field-label {
+  margin: 0;
+  padding: var(--sl-form-label-padding-block, 8px) var(--sl-form-label-padding-inline, 4px);
+  font-size: var(--sl-form-label-size, 12px);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: var(--sl-form-label-line-height, 16px);
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-notes-field-counter,
+.sl-notes-field-counter p {
+  margin: 0;
+  padding: var(--sl-form-label-padding-block, 8px) var(--sl-form-label-padding-inline, 4px);
+  font-variant-numeric: tabular-nums;
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-notes-field modus-wc-textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-block: 0;
+}
+
+.sl-attachment-tab {
+  align-items: flex-start;
+  width: 100%;
+  padding-block-start: var(--modus-wc-spacing-lg);
+  padding-inline-start: 8px;
+}
+
+.sl-attachment-tab modus-wc-file-dropzone,
+.sl-attachment-tab .modus-wc-file-dropzone {
+  display: block;
+  width: 644px;
+  max-width: 100%;
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  padding-inline: var(--modus-wc-spacing-lg);
+  border-color: var(--modus-wc-color-gray-6);
+  border-radius: var(--modus-wc-border-radius-2xl);
+  background-color: var(--modus-wc-color-base-100);
+  color: var(--modus-wc-color-gray-7);
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone .default-content {
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone.dragging-over {
+  background-color: var(--modus-wc-color-primary-pale);
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone.invalid-file-type {
+  background-color: color-mix(in sRGB, var(--modus-wc-color-error-pale) 80%, transparent);
+}
+
+.sl-attachment-tab modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content.sl-attachment-dropzone.upload-success {
+  background-color: color-mix(in sRGB, var(--modus-wc-color-success-pale) 80%, transparent);
+}
+
+.sl-attachment-dropzone-copy {
+  display: inline;
+  text-align: center;
+  color: var(--modus-wc-color-gray-7);
+}
+
+.sl-attachment-dropzone-click {
+  color: var(--modus-wc-color-primary);
+  text-decoration: none;
+}
+
+.sl-notes-field modus-wc-textarea > label.sl-form-control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 88px;
+  height: 88px;
+  padding-inline: var(--sl-form-control-padding-inline, 12px);
+  padding-block: var(--sl-form-control-padding-block, 4px);
+  border-radius: var(--sl-form-control-radius, 8px);
+}
+
+.sl-notes-field modus-wc-textarea textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 80px;
+  height: 80px;
+  resize: none;
+  font-size: var(--sl-form-control-font-size, 14px);
+  line-height: var(--sl-form-control-line-height, 20px);
+}
+
+.sl-form-field-grid {
+  --sl-form-column-gap: 16px;
+  --sl-form-row-gap: 16px;
+  --sl-form-label-size: 12px;
+  --sl-form-label-line-height: 16px;
+  --sl-form-label-padding-block: 8px;
+  --sl-form-label-padding-inline: 4px;
+  --sl-form-label-control-gap: 4px;
+  --sl-form-control-height: 32px;
+  --sl-form-control-radius: 8px;
+  --sl-form-control-padding-inline: 12px;
+  --sl-form-control-padding-block: 4px;
+  --sl-form-control-font-size: 14px;
+  --sl-form-control-line-height: 20px;
+  --sl-form-field-min-height: 68px;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--sl-form-column-gap);
+  row-gap: var(--sl-form-row-gap);
+}
+
+.sl-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sl-form-label-control-gap);
+  min-width: 0;
+  width: 100%;
+  min-height: var(--sl-form-field-min-height);
+  box-sizing: border-box;
+}
+
+.sl-form-field-span-2 {
+  grid-column: span 2;
+}
+
+.sl-form-field-description {
+  grid-column: 1 / -1;
+  width: 588px;
+  max-width: 100%;
+  min-height: 88px;
+}
+
+.sl-form-field-description modus-wc-textarea > label.sl-form-control {
+  align-items: flex-start;
+  min-height: 52px;
+  height: 52px;
+}
+
+.sl-form-field-description modus-wc-textarea textarea {
+  min-height: 44px;
+  height: 44px;
+  resize: none;
+}
+
+.sl-form-field-full {
+  grid-column: 1 / -1;
+}
+
+.sl-form-field-grid modus-wc-text-input,
+.sl-form-field-grid modus-wc-select,
+.sl-form-field-grid modus-wc-textarea,
+.sl-form-field-grid modus-wc-checkbox,
+.sl-form-field-grid modus-wc-switch,
+.sl-form-field modus-wc-text-input,
+.sl-form-field modus-wc-select,
+.sl-form-field modus-wc-textarea,
+.sl-form-field modus-wc-checkbox,
+.sl-form-field modus-wc-switch {
+  margin-block: 0;
+}
+
+/* customClass lands on the inner label/wrapper, so the host must also stretch */
+.sl-form-field modus-wc-text-input,
+.sl-form-field modus-wc-select,
+.sl-form-field modus-wc-textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.sl-form-field-label {
+  margin: 0;
+  box-sizing: border-box;
+  min-height: calc(
+    var(--sl-form-label-padding-block) * 2 + var(--sl-form-label-line-height)
+  );
+  padding: var(--sl-form-label-padding-block) var(--sl-form-label-padding-inline);
+  font-size: var(--sl-form-label-size);
+  font-weight: var(--modus-wc-font-weight-semibold);
+  line-height: var(--sl-form-label-line-height);
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-form-control,
+.sl-form-field label.sl-form-control,
+.sl-form-field .sl-form-control {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control,
+.sl-form-field modus-wc-select > label.sl-form-control {
+  box-sizing: border-box;
+  min-height: var(--sl-form-control-height);
+  height: var(--sl-form-control-height);
+  padding-inline: var(--sl-form-control-padding-inline);
+  padding-block: var(--sl-form-control-padding-block);
+  border-radius: var(--sl-form-control-radius);
+}
+
+.sl-form-field modus-wc-text-input > label,
+.sl-form-field modus-wc-select > label,
+.sl-form-field modus-wc-textarea > label {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-2xs);
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+/* Lookup icon defaults leading; reverse to trailing (ACO / Figma) */
+.sl-form-field modus-wc-text-input > label.sl-form-control:has(.modus-wc-text-input-icon-search),
+.sl-form-field modus-wc-text-input > label.sl-form-control:has(.modus-wc-text-input-icon-custom) {
+  flex-direction: row-reverse;
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control .modus-wc-text-input-icon-search,
+.sl-form-field modus-wc-text-input > label.sl-form-control .sl-lookup-icon {
+  flex: none;
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control .modus-wc-text-input-icon-search {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control .sl-lookup-icon {
+  width: 14px;
+  height: 11px;
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control input.modus-wc-grow {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+}
+
+.sl-form-field modus-wc-text-input input,
+.sl-form-field modus-wc-text-input input.modus-wc-grow,
+.sl-form-field modus-wc-select select,
+.sl-form-field modus-wc-textarea textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  font-size: var(--sl-form-control-font-size);
+  line-height: var(--sl-form-control-line-height);
+}
+
+/* Modus ships a --readonly hook class with no visual treatment, so read-only
+   fields are indistinguishable from editable ones. Fill them like a disabled
+   field but keep full-contrast text: the value still matters, it just is not
+   editable here. */
+.sl-form-field modus-wc-text-input > label.sl-form-control:has(input[readonly]),
+.sl-form-field modus-wc-textarea > label.sl-form-control:has(textarea[readonly]) {
+  background-color: var(--modus-wc-color-base-200);
+  border-color: var(--modus-wc-color-base-200);
+}
+
+.sl-form-field modus-wc-text-input > label.sl-form-control:has(input[readonly]) input,
+.sl-form-field modus-wc-textarea > label.sl-form-control:has(textarea[readonly]) textarea {
+  background-color: transparent;
+  cursor: default;
+}
+
+.sl-form-field:not(:has(modus-wc-text-input, modus-wc-select, modus-wc-textarea)) {
+  min-height: auto;
+}
+
+.sl-inline-field-row {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  min-height: var(--sl-form-control-height);
+}
+
+.sl-inline-field-suffix {
+  font-size: var(--modus-wc-font-size-sm);
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-form-control-inline {
+  flex: 1;
+  min-width: 0;
+}
+
+.sl-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--modus-wc-spacing-sm);
+}
+
+.sl-retention-radios {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--sl-form-column-gap, 16px);
+  row-gap: var(--sl-form-row-gap, 16px);
+  width: 100%;
+}
+
+.sl-retention-radios modus-wc-radio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  justify-self: start;
+  gap: 8px;
+  width: auto;
+  max-width: 100%;
+}
+
+.sl-retention-radios modus-wc-radio input[type='radio'].modus-wc-radio {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.sl-retention-radios modus-wc-radio modus-wc-input-label,
+.sl-retention-radios modus-wc-radio .modus-wc-input-label {
+  padding-inline-start: 0;
+}
+
+.sl-retention-radios modus-wc-radio modus-wc-input-label,
+.sl-retention-radios modus-wc-radio label.modus-wc-input-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: start;
+  width: auto;
+}
+
+.sl-distribution-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-xs);
+}
+
+.sl-item-estimates-collapse-host {
+  --sl-item-estimate-col-width: 168px;
+  --sl-item-estimates-chevron-gap: 40px;
+  --sl-item-estimates-chevron-size: 1.5rem;
+  display: block;
+  width: 100%;
+  margin-bottom: calc(var(--modus-wc-spacing-lg) - var(--modus-wc-spacing-xs));
+}
+
+.sl-item-estimates-collapse-host modus-wc-collapse {
+  display: block;
+  width: 100%;
+}
+
+.sl-item-estimates-collapse-host [slot='content'] {
+  display: none !important;
+}
+
+.sl-item-estimates-collapse {
+  display: block;
+  width: 100%;
+}
+
+.sl-item-estimates-collapse-host modus-wc-collapse .modus-wc-collapse.sl-item-estimates-collapse {
+  margin-bottom: 0;
+  background-color: var(--modus-wc-color-gray-light);
+  border-radius: var(--modus-wc-border-radius-lg);
+}
+
+.sl-item-estimates-collapse-host
+  modus-wc-collapse
+  .modus-wc-collapse.sl-item-estimates-collapse
+  > .modus-wc-collapse-title {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+  align-items: flex-start;
+}
+
+.sl-item-estimates-collapse .modus-wc-summary-main-content {
+  width: 100%;
+  min-width: 0;
+}
+
+.sl-item-estimates-collapse-host
+  modus-wc-collapse
+  .modus-wc-collapse.sl-item-estimates-collapse
+  > .modus-wc-collapse-content {
+  padding: 0;
+  transition: none;
+}
+
+.sl-item-estimates-collapse-host:not([data-accordion='true'])
+  modus-wc-collapse
+  .modus-wc-collapse-arrow
+  > .modus-wc-collapse-title::before,
+.sl-item-estimates-collapse-host:not([data-accordion='true'])
+  modus-wc-collapse
+  .modus-wc-collapse-arrow
+  > .modus-wc-collapse-title::after {
+  display: none;
+}
+
+.sl-item-estimates-collapse-host:not([data-accordion='true'])
+  modus-wc-collapse
+  .modus-wc-collapse.sl-item-estimates-collapse
+  > .modus-wc-collapse-title {
+  pointer-events: none;
+  cursor: default;
+}
+
+.sl-item-estimates-collapse-host[data-accordion='true']
+  modus-wc-collapse
+  .modus-wc-collapse-arrow
+  > .modus-wc-collapse-title::after {
+  margin-inline-start: var(--sl-item-estimates-chevron-gap);
+}
+
+.sl-item-estimates-collapse-host[data-accordion='true']
+  .modus-wc-collapse.sl-item-estimates-collapse.modus-wc-collapse-close
+  .sl-item-estimates-strip {
+  max-height: var(--sl-item-estimates-row-height);
+  overflow: hidden;
+}
+
+.sl-item-estimates-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--modus-wc-spacing-lg);
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+}
+
+.sl-item-estimates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--modus-wc-spacing-lg);
+  padding-block: var(--modus-wc-spacing-2xs);
+}
+
+.sl-item-estimate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-2xs);
+  width: var(--sl-item-estimate-col-width);
+  min-width: var(--sl-item-estimate-col-width);
+  max-width: var(--sl-item-estimate-col-width);
+  flex: none;
+}
+
+.sl-item-estimate-label,
+.sl-item-estimate-label p,
+.sl-item-estimate-value,
+.sl-item-estimate-value p {
+  margin: 0;
+}
+
+.sl-item-estimate-label,
+.sl-item-estimate-label p {
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-item-estimate-value,
+.sl-item-estimate-value p {
+  color: var(--modus-wc-color-gray-10);
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-distribution-add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+.sl-distribution-scroll {
+  max-height: 24rem;
+}
+
+.sl-distribution-table {
+  --sl-dist-firm-col-width: 116px;
+  --sl-dist-firm-name-col-width: 200px;
+  --sl-item-seq-col-width: 4.5rem;
+  --sl-item-project-col-width: 6rem;
+  --sl-item-sl-item-col-width: 5rem;
+  --sl-inclusion-seq-col-width: 4.5rem;
+  --sl-change-order-co-col-width: 9rem;
+  --sl-seq-col-width: 4.5rem;
+  --sl-cert-type-col-width: 14rem;
+  --sl-comp-code-col-width: 7rem;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-dist-firm-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-dist-firm-col-width);
+  min-width: var(--sl-dist-firm-col-width);
+  max-width: var(--sl-dist-firm-col-width);
+}
+
+.sl-distribution-table .sl-sticky-col.sl-dist-firm-name-col {
+  position: sticky;
+  left: calc(var(--sl-select-col-width) + var(--sl-dist-firm-col-width));
+  z-index: 2;
+  width: var(--sl-dist-firm-name-col-width);
+  min-width: var(--sl-dist-firm-name-col-width);
+  max-width: var(--sl-dist-firm-name-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-dist-firm-name-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-item-seq-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-item-seq-col-width);
+  min-width: var(--sl-item-seq-col-width);
+  max-width: var(--sl-item-seq-col-width);
+}
+
+.sl-distribution-table .sl-sticky-col.sl-item-project-col {
+  position: sticky;
+  left: calc(var(--sl-select-col-width) + var(--sl-item-seq-col-width));
+  z-index: 2;
+  width: var(--sl-item-project-col-width);
+  min-width: var(--sl-item-project-col-width);
+  max-width: var(--sl-item-project-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-item-project-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-item-sl-item-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-item-sl-item-col-width);
+  min-width: var(--sl-item-sl-item-col-width);
+  max-width: var(--sl-item-sl-item-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table.sl-items-grid-readonly .sl-sticky-col.sl-item-sl-item-col {
+  left: 0;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-item-sl-item-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-inclusion-seq-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-inclusion-seq-col-width);
+  min-width: var(--sl-inclusion-seq-col-width);
+  max-width: var(--sl-inclusion-seq-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-inclusion-seq-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-change-order-co-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: var(--sl-change-order-co-col-width);
+  min-width: var(--sl-change-order-co-col-width);
+  max-width: var(--sl-change-order-co-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-change-order-co-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-seq-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-seq-col-width);
+  min-width: var(--sl-seq-col-width);
+  max-width: var(--sl-seq-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-seq-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-compliance-table {
+  --sl-seq-col-width: 6.5rem;
+}
+
+.sl-certificates-table .sl-sticky-col.sl-seq-col::after {
+  display: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-cert-type-col {
+  position: sticky;
+  left: var(--sl-select-col-width);
+  z-index: 2;
+  width: var(--sl-cert-type-col-width);
+  min-width: var(--sl-cert-type-col-width);
+  max-width: var(--sl-cert-type-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-cert-type-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-comp-code-col {
+  position: sticky;
+  left: calc(var(--sl-select-col-width) + var(--sl-seq-col-width));
+  z-index: 2;
+  width: var(--sl-comp-code-col-width);
+  min-width: var(--sl-comp-code-col-width);
+  max-width: var(--sl-comp-code-col-width);
+  border-right: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-comp-code-col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+/* Frozen columns are narrower than the default 8rem inline-control min-width */
+.sl-distribution-table .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col) {
+  overflow: hidden;
+}
+
+.sl-distribution-table .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col) modus-wc-text-input,
+.sl-distribution-table .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col) modus-wc-select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.sl-distribution-table .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col) .sl-table-inline-control {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sl-distribution-table
+  .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col)
+  modus-wc-text-input
+  > label.sl-table-inline-control,
+.sl-distribution-table
+  .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col)
+  modus-wc-select
+  > label.sl-table-inline-control {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-inline: 0;
+}
+
+.sl-distribution-table
+  .sl-sticky-col:not(.sl-select-col):not(.sl-actions-col)
+  modus-wc-text-input
+  > label.sl-table-inline-control
+  input.modus-wc-grow {
+  min-width: 0;
+}
+
+/* Restore Modus 1px left/right cell strokes. The 4px frozen-edge rails above
+   sit on the Project / Firm Name / Actions columns and overlap row borders
+   so those thicker separators stay continuous. */
+.sl-subcontracts-table.sl-distribution-table th,
+.sl-subcontracts-table.sl-distribution-table td {
+  border-inline: 1px solid var(--modus-wc-color-gray-0);
+}
+
+.sl-distribution-table .sl-sticky-col.sl-actions-col {
+  border-left: none;
+  box-shadow: none;
+}
+
+.sl-distribution-table .sl-sticky-col.sl-actions-col::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--sl-grid-header-stroke);
+  height: calc(100% + 1px);
+  background-color: var(--modus-wc-color-gray-0);
+  pointer-events: none;
+}
+
+.sl-distribution-table thead th.sl-sticky-col.sl-select-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-dist-firm-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-dist-firm-name-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-item-seq-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-item-project-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-item-sl-item-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-inclusion-seq-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-change-order-co-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-seq-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-cert-type-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-comp-code-col,
+.sl-distribution-table thead th.sl-sticky-col.sl-actions-col {
+  z-index: 5;
+}
+
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-select-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-dist-firm-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-dist-firm-name-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-item-seq-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-item-project-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-item-sl-item-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-inclusion-seq-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-change-order-co-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-seq-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-cert-type-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-comp-code-col,
+.sl-distribution-table tbody tr:nth-child(odd) td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-select-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-dist-firm-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-dist-firm-name-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-item-seq-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-item-project-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-item-sl-item-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-inclusion-seq-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-change-order-co-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-seq-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-cert-type-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-comp-code-col,
+.sl-distribution-table tbody tr:nth-child(even) td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-white);
+}
+
+.sl-subcontracts-table.sl-distribution-table tbody tr.sl-row-selected td,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-select-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-dist-firm-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-dist-firm-name-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-item-seq-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-item-project-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-item-sl-item-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-inclusion-seq-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-change-order-co-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-seq-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-cert-type-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-comp-code-col,
+.sl-distribution-table tbody tr.sl-row-selected td.sl-sticky-col.sl-actions-col {
+  background-color: var(--modus-wc-color-primary-pale);
+}
+
+.sl-distribution-firm-scroll {
+  max-height: 20rem;
+}
+
+/* Modus's global `td, th { border-width: 1px }` draws a vertical rule between
+   every cell; the firm picker should only show the horizontal row separators */
+.sl-subcontracts-table.sl-distribution-firm-table th,
+.sl-subcontracts-table.sl-distribution-firm-table td {
+  border-inline: 0;
+}
+
+.sl-distribution-firm-row {
+  cursor: pointer;
+}
+
+.sl-subcontracts-table.sl-distribution-firm-table
+  tbody
+  tr.sl-distribution-firm-row:not(.sl-row-selected):hover
+  td {
+  background-color: var(--modus-wc-color-gray-light);
+}
+
+/* Inline cells read as plain text. Focus uses a Modus primary stroke on the
+   cell, not DaisyUI's gray offset ring on the nested input. */
+.sl-distribution-table tbody td:has(.sl-table-inline-control):not(.sl-sticky-col) {
+  position: relative;
+}
+
+.sl-distribution-table tbody td:has(.sl-table-inline-control):focus-within {
+  z-index: 4;
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: -2px;
+}
+
+/* Interfaced items are display-only: plain text cells, no focus ring or inputs. */
+.sl-distribution-table.sl-items-grid-readonly tbody td {
+  cursor: default;
+}
+
+.sl-distribution-table.sl-items-grid-readonly tbody tr.sl-row-selectable,
+.sl-distribution-table.sl-items-grid-readonly tbody tr.sl-row-selectable td {
+  cursor: pointer;
+}
+
+.sl-distribution-table.sl-items-grid-readonly tbody td .sl-table-readonly-cell {
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--modus-wc-color-base-content);
+}
+
+.sl-distribution-table.sl-items-grid-readonly td.sl-table-col-numeric .sl-table-readonly-cell {
+  text-align: right;
+}
+
+.sl-distribution-table tbody td modus-wc-text-input,
+.sl-distribution-table tbody td modus-wc-select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.sl-distribution-table
+  tbody
+  td
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-sm,
+.sl-distribution-table tbody td modus-wc-select .modus-wc-select.modus-wc-input-sm,
+.sl-distribution-table tbody td .sl-table-inline-control {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.sl-distribution-table tbody td .sl-table-inline-control:hover,
+.sl-distribution-table tbody td .sl-table-inline-control:focus-within,
+.sl-distribution-table
+  tbody
+  td
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input:focus-within,
+.sl-distribution-table tbody td modus-wc-select .modus-wc-select:focus-within {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.sl-distribution-table tbody td modus-wc-text-input > label.sl-table-inline-control,
+.sl-distribution-table tbody td modus-wc-select > label.sl-table-inline-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.sl-distribution-table
+  tbody
+  td
+  modus-wc-text-input
+  > label.sl-table-inline-control.modus-wc-text-input--readonly,
+.sl-distribution-table tbody td modus-wc-text-input > label.sl-table-inline-control:has(input[readonly]) {
+  background-color: transparent;
+}
+
+.sl-distribution-table tbody td .sl-table-inline-control input.modus-wc-grow,
+.sl-distribution-table tbody td .sl-table-inline-control select {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 20px;
+  color: var(--modus-wc-color-gray-10);
+}
+
+.sl-distribution-table td.sl-table-col-numeric .sl-table-inline-control input.modus-wc-grow,
+.sl-distribution-table td.sl-table-col-numeric modus-wc-text-input > label.sl-table-inline-control {
+  text-align: right;
+}
+
+.sl-distribution-settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-lg);
+  padding: var(--modus-wc-spacing-lg);
+  border: 1px solid var(--modus-wc-color-gray-0);
+  border-radius: var(--modus-wc-border-radius-lg);
+}
+
+.sl-distribution-settings-disabled {
+  color: var(--modus-wc-color-base-content-low-contrast);
+}
+
+.sl-distribution-settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--modus-wc-spacing-2xl);
+}
+
+.sl-distribution-settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-2xs);
+  min-width: 0;
+}
+
+.sl-distribution-settings-label {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--modus-wc-color-gray-6);
+}
+
+.sl-distribution-radio-group {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sl-distribution-radios {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-2xs);
+  margin-block-start: var(--modus-wc-spacing-2xs);
+}
+
+/* Each option is one 88px frame so the control and its label stay grouped and
+   the columns line up across both radio groups */
+.sl-distribution-radios modus-wc-radio {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  width: 88px;
+  min-width: 88px;
+}
+
+.sl-distribution-radios modus-wc-radio modus-wc-input-label,
+.sl-distribution-radios modus-wc-radio .modus-wc-input-label {
+  padding-inline-start: 0;
+  width: auto;
+}
+
+.sl-distribution-date {
+  min-width: 11rem;
+}
+
+.sl-distribution-add-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--modus-wc-spacing-sm);
+}
+
+.sl-distribution-saved-count {
+  margin-inline-end: auto;
+  font-size: var(--modus-wc-font-size-sm);
+  color: var(--modus-wc-color-base-content);
+}
+
+.sl-detail-content-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-xs);
+  margin-inline-start: auto;
+}
+
+.sl-detail-content-actions .modus-wc-divider.sl-detail-action-divider {
+  width: 8px;
+  min-width: 8px;
+  height: 24px;
+  margin: 0;
+  gap: 0;
+  flex: none;
+}
+
+.sl-detail-content-actions .modus-wc-divider.sl-detail-action-divider::before,
+.sl-detail-content-actions .modus-wc-divider.sl-detail-action-divider::after {
+  width: 1px;
+  min-width: 1px;
+  background-color: var(--modus-wc-color-gray-0) !important;
+}
+
+.sl-grid-toolbar.sl-toolbar-inert {
+  opacity: 0.5;
+}
+
+.sl-table-inline-control {
+  min-width: 8rem;
+}
+
+.sl-distribution-table .sl-table-inline-control {
+  min-width: 0;
+}
+
+.sl-validation-error {
+  margin: 0 0 var(--modus-wc-spacing-sm);
+  color: var(--modus-wc-color-red);
+  font-size: var(--modus-wc-font-size-sm);
+}
+
+@media (max-width: 1200px) {
+  .sl-form-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sl-detail-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .sl-detail-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-inline-end: none;
+    border-bottom: 1px solid var(--modus-wc-color-gray-0);
+    border-start-start-radius: var(--modus-wc-border-radius-lg);
+    border-end-start-radius: 0;
+    border-start-end-radius: var(--modus-wc-border-radius-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .sl-form-field-grid,
+  .sl-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sl-form-field-span-2 {
+    grid-column: span 1;
+  }
+}
+

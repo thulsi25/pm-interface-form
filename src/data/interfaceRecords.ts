@@ -1,4 +1,8 @@
-export type InterfaceRecordStatus = 'Yet to validate' | 'In unposted batch'
+export type InterfaceRecordStatus =
+  | 'Yet to validate'
+  | 'In unposted batch'
+  | 'Validated'
+  | 'Error in validation'
 
 export interface InterfaceRecord {
   id: string
@@ -11,6 +15,9 @@ export interface InterfaceRecord {
   amountToInterface: number
   currentAmount: number
   transactionType: string
+  errorDescription?: string
+  sourceSubcontractId?: string
+  sourceItemId?: string
 }
 
 export const PM_INTERFACE_RECORDS: InterfaceRecord[] = [
@@ -28,7 +35,7 @@ export const PM_INTERFACE_RECORDS: InterfaceRecord[] = [
   },
   {
     id: '2',
-    recordType: 'Purchase Order Change Order',
+    recordType: 'Approved Change Order',
     status: 'Yet to validate',
     recordId: '134-2438',
     description: 'Permits',

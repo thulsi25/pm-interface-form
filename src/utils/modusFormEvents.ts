@@ -9,8 +9,18 @@ export function readInputChecked(e: globalThis.CustomEvent): boolean {
 }
 
 export function formatAmount(value: number): string {
+  const decimalPart = String(value).split('.')[1] ?? ''
+  const minimumFractionDigits =
+    decimalPart.length >= 3
+      ? 3
+      : decimalPart.length === 0
+        ? 2
+        : value < 100
+          ? 3
+          : 2
+
   return value.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
+    minimumFractionDigits,
     maximumFractionDigits: 3,
   })
 }
