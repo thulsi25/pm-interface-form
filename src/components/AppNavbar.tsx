@@ -32,7 +32,7 @@ export function AppNavbar() {
           alt="Viewpoint Construction Software"
           className="pm-navbar-logo-img"
           height={32}
-          src="/viewpoint-construction-logo.png"
+          src={`${import.meta.env.BASE_URL}viewpoint-construction-logo.png`}
         />
       </div>
       <div slot="end" className="pm-navbar-end">

@@ -6,7 +6,7 @@ import { PmInterfacePage } from './pages/PmInterfacePage'
 import { PmSubcontractDetailPage } from './pages/PmSubcontractDetailPage'
 import { PmSubcontractsPage } from './pages/PmSubcontractsPage'
 
-setAssetPath(`${window.location.origin}/`)
+setAssetPath(`${window.location.origin}${import.meta.env.BASE_URL}`)
 
 function AppShell() {
   return (
@@ -30,7 +30,7 @@ function AppShell() {
 export default function App() {
   return (
     <ModusWcThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
         <AppShell />
       </BrowserRouter>
     </ModusWcThemeProvider>

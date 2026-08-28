@@ -49,11 +49,6 @@ export function SubcontractDetailSummary({
   const showSubmitButton = isSubmitForApprovalVisible(record.workflowStatus)
   const submitLabel = submitForApprovalLabel(record.workflowStatus)
 
-  const openWorkflowReviewers = () => {
-    const dialog = document.getElementById(WORKFLOW_REVIEWERS_MODAL_ID) as HTMLDialogElement | null
-    dialog?.showModal()
-  }
-
   const closeWorkflowReviewers = () => {
     const dialog = document.getElementById(WORKFLOW_REVIEWERS_MODAL_ID) as HTMLDialogElement | null
     dialog?.close()
